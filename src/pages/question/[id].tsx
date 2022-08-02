@@ -80,7 +80,7 @@ const QuestionsPageContent: React.FC<{ id: string }> = ({ id }) => {
                         }
 
                         return (
-                            <div className="flex space-between items-center w-full border border-solid rounded-xl p-5 border-gray-500">
+                            <div key={index} className="flex space-between items-center w-full border border-solid rounded-xl p-5 border-gray-500">
                                 <button
                                     onClick={() =>
                                         mutate({ questionId: data.question!.id, option: index })
