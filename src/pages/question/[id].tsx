@@ -2,10 +2,12 @@ import { PollQuestion, Prisma, Vote } from "@prisma/client";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useState } from "react";
 import { trpc } from "../../utils/trpc";
 
 const QuestionsPageContent: React.FC<{ id: string }> = ({ id }) => {
     const { data } = trpc.useQuery(["questions.get-by-id", { id }]);
+    const [voted, setVoted] = useState(false);
     let totalVotes = 0;
 
     const { mutate, data: voteResponse } = trpc.useMutation(
@@ -19,6 +21,12 @@ const QuestionsPageContent: React.FC<{ id: string }> = ({ id }) => {
             },
         }
     );
+
+    // const voted = data?.vote?.voterToken === localStorage.getItem("voterToken");
+    console.log("VOTER DATA", data);
+
+    console.log(voted);
+
 
     if (!data || !data?.question) {
         return <div>Question not found</div>;
@@ -36,7 +44,7 @@ const QuestionsPageContent: React.FC<{ id: string }> = ({ id }) => {
         else if (voteCount == undefined) return 0;
     };
 
-    if (data && data != undefined) getTotalVotes(data.votes);
+    if (data && data !== undefined) getTotalVotes(data.votes);
 
     return (
         <div className="p-6 min-h-screen w-screen">
@@ -57,11 +65,11 @@ const QuestionsPageContent: React.FC<{ id: string }> = ({ id }) => {
                     {data?.question?.question}
                 </h1>
                 <h2 className="text-xl font-bold mb-10 text-center">
-                    Select your choice:
+                    {data?.isOwner || !data?.vote ? "Select your choice" : "Results"}
                 </h2>
                 <div className="grid grid-cols-2 gap-4">
                     {(data?.question?.options as string[])?.map((option, index) => {
-                        if (data?.isOwner || data?.vote) {
+                        if (data?.isOwner || data?.vote || voted) {
                             return (
                                 <div key={index} className="flex flex-col items-center justify-center border-2 rounded-xl p-5 border-[#0099aa]">
                                     <div className="flex space-between items-center w-full p-3">
@@ -95,7 +103,7 @@ const QuestionsPageContent: React.FC<{ id: string }> = ({ id }) => {
                     })}
                 </div>
                 <div className="text-center font-semibold p-10">
-                    Total Votes: {totalVotes}
+                    {`Total Votes: ${totalVotes}`}
                 </div>
             </main>
         </div>

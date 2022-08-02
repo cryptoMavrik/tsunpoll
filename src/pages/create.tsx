@@ -55,7 +55,7 @@ const CreateQuestionForm = () => {
                     <div className="text-lg font-bold cursor-pointer">&larr; go back</div>
                 </Link>
             </header>
-            <div className="flex flex-col justify-center items-center max-w-2xl m-auto mt-[5rem] py-10 md:max-w-2xl bg-[#0099aa] px-16 rounded-md">
+            <div className="flex flex-col justify-center items-center max-w-2xl m-auto mt-[5rem] py-10 md:max-w-2xl border-2 border-[#0099aa] px-16 rounded-md">
                 <h2 className="text-4xl font-bold text-center">Create new poll</h2>
 
                 <form

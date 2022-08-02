@@ -2,11 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  background-color: hsl(0 0% 0% / 0.9);
-  color: hsl(0 0% 100% /0.9);
-}
-
   *::before,
   *::after {
     box-sizing: border-box;
@@ -20,7 +15,7 @@ body {
   }
   body {
     overflow-x: hidden;
-    background-color: hsl(0 0% 0% / 0.9);
+    background-color: rgb(0, 2, 5);
     color: hsl(0 0% 100% /0.9);
   }
   :root {
