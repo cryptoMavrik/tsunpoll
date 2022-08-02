@@ -52,7 +52,7 @@ const QuestionsPageContent: React.FC<{ id: string }> = ({ id }) => {
                 )}
             </header>
 
-            <main className="max-w-2xl mx-auto">
+            <main className="max-w-2xl mx-auto flex flex-col">
                 <h1 className="text-4xl font-bold mb-10 text-center">
                     {data?.question?.question}
                 </h1>
@@ -63,24 +63,24 @@ const QuestionsPageContent: React.FC<{ id: string }> = ({ id }) => {
                     {(data?.question?.options as string[])?.map((option, index) => {
                         if (data?.isOwner || data?.vote) {
                             return (
-                                <div key={index} className="flex flex-col items-center justify-center border border-solid rounded-xl p-5 border-gray-600">
+                                <div key={index} className="flex flex-col items-center justify-center border-2 rounded-xl p-5 border-[#0099aa]">
                                     <div className="flex space-between items-center w-full p-3">
                                         <div className="font-bold text-2xl w-full">{(option as any).text}</div>
                                         <div className="font-bold text-xl">
                                             {getPercent(data?.votes?.[index]?._count)?.toFixed()}%
                                         </div>
                                     </div>
-                                    <progress
+                                    {/* <progress
                                         className="w-full rounded-xl max-h-1 bg-emerald-700 p-1 my-2"
                                         value={data?.votes?.[index]?._count ?? 0}
                                         max={totalVotes}
-                                    ></progress>
+                                    ></progress> */}
                                 </div>
                             );
                         }
 
                         return (
-                            <div key={index} className="flex space-between items-center w-full border border-solid rounded-xl p-5 border-gray-500">
+                            <div key={index} className="flex space-between items-center w-full border-2 rounded-xl p-5 border-[#0099aa]">
                                 <button
                                     onClick={() =>
                                         mutate({ questionId: data.question!.id, option: index })

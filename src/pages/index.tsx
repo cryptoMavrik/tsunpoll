@@ -19,19 +19,24 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <div className="flex flex-col w-full overflow-hidden justify-start items-center mt-[10rem]">
-        <Head>
-          <title>Polls</title>
-        </Head>
-        {data?.length !== 0 && <>
-          <h1 className='text-7xl font-bold mb-10 text-center'>
+      <Head>
+        <title>Polls</title>
+      </Head>
+      <div className="flex flex-col w-full h-screen overflow-hidden justify-center items-center py-[2rem]">
+        <div className="flex absolute top-5 justify-between w-2/3 px-[4rem]">
+          <h1 className='text-5xl font-bold mb-10 text-center'>
             Polls
           </h1>
+          <button className="inline-flex justify-center items-center font-bold bg-[#0099aa] w-[12rem] h-10 rounded-lg" onClick={() => router.replace("/create")}>
+            Create Poll
+          </button>
+        </div>
+        {data?.length !== 0 && <>
           <div className='flex flex-wrap gap-2 justify-center items-center w-1/2'>
             {data?.map((question: any, index: number) => {
               return (
                 <div key={index}>
-                  <button className='border-2 border-emerald-700 p-3 rounded-xl w-max' onClick={() => handleClick(question.id)}>
+                  <button className='border-2 border-[#0099aa] p-3 rounded-xl w-max' onClick={() => handleClick(question.id)}>
                     <h1>{question.question}</h1>
                   </button>
                   <div className="p-4"></div>
@@ -41,10 +46,6 @@ const Home: NextPage = () => {
           </div>
         </>
         }
-        <br />
-        <button className="font-bold py-2 bg-emerald-700 w-[12rem] rounded-lg" onClick={() => router.replace("/create")}>
-          Create Poll
-        </button>
       </div>
     </>
   )

@@ -55,7 +55,7 @@ const CreateQuestionForm = () => {
                     <div className="text-lg font-bold cursor-pointer">&larr; go back</div>
                 </Link>
             </header>
-            <div className="flex flex-col justify-center items-center max-w-2xl m-auto mt-[5rem] py-12 md:max-w-2xl bg-teal-900 p-5 rounded-3xl">
+            <div className="flex flex-col justify-center items-center max-w-2xl m-auto mt-[5rem] py-10 md:max-w-2xl bg-[#0099aa] px-16 rounded-md">
                 <h2 className="text-4xl font-bold text-center">Create new poll</h2>
 
                 <form
@@ -74,8 +74,9 @@ const CreateQuestionForm = () => {
                             <input
                                 {...register("question")}
                                 type="text"
-                                className="w-full block text-gray-900 rounded-lg px-2 py-3 text-xl"
+                                className="w-full block text-gray-900 rounded-lg px-2 py-3 text-xl outline-[#4ba8ff8a]"
                                 placeholder="ex. What's your favorite color?"
+                                autoComplete="off"
                             />
                             {errors.question && (
                                 <p className="text-red-400">{errors.question.message}</p>
@@ -97,7 +98,8 @@ const CreateQuestionForm = () => {
                                                 {...register(`options.${index}.text`, {
                                                     required: true,
                                                 })}
-                                                className="input input-bordered w-full text-gray-600 font-light p-2 rounded-lg"
+                                                className="input input-bordered outline-[#4ba8ff8a] w-full text-gray-500 font-semibold p-2 rounded-lg"
+                                                autoComplete="off"
                                             />
                                             <button type="button" onClick={() => remove(index)} >
                                                 <svg
@@ -133,7 +135,7 @@ const CreateQuestionForm = () => {
                         <div className="flex justify-center w-full mt-10">
                             <button
                                 type="submit"
-                                className="font-bold py-2 bg-emerald-900 w-[12rem] rounded-lg"
+                                className="font-bold py-2 border-2 border-white-900 w-[12rem] rounded-lg"
                             >
                                 Create Poll
                             </button>
