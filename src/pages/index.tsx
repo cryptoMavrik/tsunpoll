@@ -7,6 +7,7 @@ import { trpc } from "../utils/trpc";
 const Home: NextPage = () => {
   const { data, isLoading, error } = trpc.useQuery(["questions.get-all"])
   const router = useRouter()
+  console.log("DATA", data);
 
   const handleClick = (id: string) => {
     router.replace(`/question/${id}`)
@@ -22,29 +23,27 @@ const Home: NextPage = () => {
         <Head>
           <title>Polls</title>
         </Head>
-
-        <h1 className='text-7xl font-bold mb-10 text-center'>
-          Polls
-        </h1>
-        <div className='flex flex-wrap gap-2 justify-center items-center w-1/2'>
-          {data?.map((question: any, index: number) => {
-            return (
-              <div key={index}>
-                <button className='bg-emerald-700 p-3 rounded-xl w-max' onClick={() => handleClick(question.id)}>
-                  <h1>{question.question}</h1>
-                </button>
-                <div className="p-4"></div>
-              </div>
-            )
-          })}
-        </div>
+        {data?.length !== 0 && <>
+          <h1 className='text-7xl font-bold mb-10 text-center'>
+            Polls
+          </h1>
+          <div className='flex flex-wrap gap-2 justify-center items-center w-1/2'>
+            {data?.map((question: any, index: number) => {
+              return (
+                <div key={index}>
+                  <button className='bg-emerald-700 p-3 rounded-xl w-max' onClick={() => handleClick(question.id)}>
+                    <h1>{question.question}</h1>
+                  </button>
+                  <div className="p-4"></div>
+                </div>
+              )
+            })}
+          </div>
+        </>
+        }
         <br />
-        ------------------------------
-        <h1 className='text-3xl font-semibold my-10 text-center'>
-          Create Poll
-        </h1>
         <button className="font-bold py-2 bg-emerald-700 w-[12rem] rounded-lg" onClick={() => router.replace("/create")}>
-          Go
+          Create Poll
         </button>
       </div>
     </>
