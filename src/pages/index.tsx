@@ -31,7 +31,7 @@ const Home: NextPage = () => {
             {data?.map((question: any, index: number) => {
               return (
                 <div key={index}>
-                  <button className='bg-emerald-700 p-3 rounded-xl w-max' onClick={() => handleClick(question.id)}>
+                  <button className='border-2 border-emerald-700 p-3 rounded-xl w-max' onClick={() => handleClick(question.id)}>
                     <h1>{question.question}</h1>
                   </button>
                   <div className="p-4"></div>
