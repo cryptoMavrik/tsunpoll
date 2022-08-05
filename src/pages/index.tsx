@@ -10,7 +10,7 @@ const Home: NextPage = () => {
   console.log("DATA", data);
 
   const handleClick = (id: string) => {
-    router.replace(`/question/${id}`)
+    router.replace(`/poll/${id}`)
   }
 
   if (isLoading) {
@@ -28,7 +28,7 @@ const Home: NextPage = () => {
             Polls
           </h1>
           <button className="inline-flex justify-center items-center font-bold bg-[#0099aa] w-[12rem] h-10 rounded-lg" onClick={() => router.replace("/create")}>
-            Create Poll
+            Create a poll
           </button>
         </div>
         {data?.length !== 0 && <>

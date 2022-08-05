@@ -4,7 +4,7 @@ import superjson from "superjson";
 import { questionRouter } from "./questions";
 
 export const appRouter = createRouter()
-  .transformer(superjson)
   .merge("questions.", questionRouter)
+  .transformer(superjson)
 // export type definition of API
 export type AppRouter = typeof appRouter;

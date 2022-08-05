@@ -50,7 +50,7 @@ export const questionRouter = createRouter()
                     where: {
                         questionId: input.id,
                     },
-                    by: ["questionId"],
+                    by: ["choice"],
                     _count: true,
                 });
 
@@ -80,8 +80,8 @@ export const questionRouter = createRouter()
                 },
             });
             return await prisma.vote.groupBy({
-                where: { questionId: input.questionId },
-                by: ["choice"],
+                where: { questionId: input.questionId, choice: input.option },
+                by: ["questionId", "choice"],
                 _count: true,
             });
         },

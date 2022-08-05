@@ -7,7 +7,7 @@ import { trpc } from "../../utils/trpc";
 
 const QuestionsPageContent: React.FC<{ id: string }> = ({ id }) => {
     const { data } = trpc.useQuery(["questions.get-by-id", { id }]);
-    const [voted, setVoted] = useState(false);
+    const router = useRouter()
     let totalVotes = 0;
 
     const { mutate, data: voteResponse } = trpc.useMutation(
@@ -17,23 +17,23 @@ const QuestionsPageContent: React.FC<{ id: string }> = ({ id }) => {
                 voteResponse?.map((choice: { _count: number }) => {
                     totalVotes += choice._count;
                 });
-                window.location.reload();
+                router.reload()
             },
+            onError: () => {
+                console.log("Already Voted?");
+            }
+
         }
     );
-
-    // const voted = data?.vote?.voterToken === localStorage.getItem("voterToken");
-    console.log("VOTER DATA", data);
-
-    console.log(voted);
-
 
     if (!data || !data?.question) {
         return <div>Question not found</div>;
     }
 
     const getTotalVotes = (votes: any) => {
-        votes?.map((choice: { _count: number }) => {
+        console.log("Total votes", { votes });
+
+        votes?.map((choice: { choice: number, _count: number }) => {
             totalVotes += choice._count;
         });
     };
@@ -41,10 +41,12 @@ const QuestionsPageContent: React.FC<{ id: string }> = ({ id }) => {
     const getPercent = (voteCount: any) => {
         if (voteCount !== undefined && totalVotes > 0)
             return (voteCount / totalVotes) * 100;
-        else if (voteCount == undefined) return 0;
+        else if (voteCount === undefined) return 0;
     };
 
-    if (data && data !== undefined) getTotalVotes(data.votes);
+    if (data && data !== undefined) {
+        getTotalVotes(data.votes);
+    }
 
     return (
         <div className="p-6 min-h-screen w-screen">
@@ -68,43 +70,46 @@ const QuestionsPageContent: React.FC<{ id: string }> = ({ id }) => {
                     {data?.isOwner || !data?.vote ? "Select your choice" : "Results"}
                 </h2>
                 <div className="grid grid-cols-2 gap-4">
-                    {(data?.question?.options as string[])?.map((option, index) => {
-                        if (data?.isOwner || data?.vote || voted) {
+                    {data && (data?.isOwner || data?.vote) ?
+                        (data?.question?.options as string[])?.map((option, index) => {
+                            const currentVote = data?.votes?.find((vote) => vote.choice === index)
                             return (
                                 <div key={index} className="flex flex-col items-center justify-center border-2 rounded-xl p-5 border-[#0099aa]">
-                                    <div className="flex space-between items-center w-full p-3">
-                                        <div className="font-bold text-2xl w-full">{(option as any).text}</div>
-                                        <div className="font-bold text-xl">
-                                            {getPercent(data?.votes?.[index]?._count)?.toFixed()}%
-                                        </div>
+                                    <div className="flex justify-center items-center w-full p-3">
+                                        <div className="font-bold text-center text-2xl w-full">{(option as any).text}</div>
                                     </div>
-                                    {/* <progress
-                                        className="w-full rounded-xl max-h-1 bg-emerald-700 p-1 my-2"
-                                        value={data?.votes?.[index]?._count ?? 0}
-                                        max={totalVotes}
-                                    ></progress> */}
+                                    <div className="text-center font-semibold p-1 opacity-50">
+                                        <p className="text-2xl">
+                                            {getPercent(currentVote?._count)?.toFixed()}%
+                                        </p>
+                                    </div>
                                 </div>
                             );
-                        }
-
-                        return (
-                            <div key={index} className="flex space-between items-center w-full border-2 rounded-xl p-5 border-[#0099aa]">
+                        })
+                        :
+                        (data?.question?.options as string[])?.map((option, index) => {
+                            return (<>
                                 <button
-                                    onClick={() =>
-                                        mutate({ questionId: data.question!.id, option: index })
+                                    onClick={() => {
+                                        console.log("Voting", index);
+                                        mutate({ questionId: data?.question!.id, option: index })
+                                    }
                                     }
                                     key={index}
                                     className="btn btn-outline"
                                 >
-                                    {(option as any).text}
+                                    <div key={index} className="flex justify-center items-center font-bold text-2xl w-full border-2 rounded-xl p-5 border-[#0099aa]">
+                                        {(option as any).text}
+                                    </div>
                                 </button>
-                            </div>
-                        );
-                    })}
+                            </>
+                            )
+                        })}
                 </div>
-                <div className="text-center font-semibold p-10">
-                    {`Total Votes: ${totalVotes}`}
+                <div className="text-right pt-5">
+                    {`Total Votes: ${totalVotes} `}
                 </div>
+
             </main>
         </div>
     );
