@@ -1,11 +1,4 @@
 -- CreateTable
-CREATE TABLE `Example` (
-    `id` VARCHAR(191) NOT NULL,
-
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
 CREATE TABLE `Account` (
     `id` VARCHAR(191) NOT NULL,
     `userId` VARCHAR(191) NOT NULL,
@@ -55,4 +48,32 @@ CREATE TABLE `VerificationToken` (
 
     UNIQUE INDEX `VerificationToken_token_key`(`token`),
     UNIQUE INDEX `VerificationToken_identifier_token_key`(`identifier`, `token`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `PollQuestion` (
+    `id` VARCHAR(191) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `endsAt` DATETIME(3) NULL,
+    `updatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `question` VARCHAR(5000) NOT NULL,
+    `ownerToken` VARCHAR(255) NOT NULL,
+    `options` JSON NOT NULL,
+
+    INDEX `PollQuestion_ownerToken_idx`(`ownerToken`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Vote` (
+    `id` VARCHAR(191) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `choice` INTEGER NOT NULL,
+    `voterToken` VARCHAR(255) NOT NULL,
+    `questionId` VARCHAR(191) NOT NULL,
+
+    INDEX `Vote_voterToken_idx`(`voterToken`),
+    INDEX `Vote_questionId_idx`(`questionId`),
+    UNIQUE INDEX `Vote_voterToken_questionId_key`(`voterToken`, `questionId`),
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
